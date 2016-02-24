@@ -9,9 +9,10 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "CLIENT_DETAILS")
-public class Client {
+public class Client_OLD {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "CLIENT_ID")
 	private int clientId;
 	@Column(name = "CLIENT_NAME")
 	private String clientName;
