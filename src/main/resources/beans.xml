@@ -25,6 +25,11 @@ http://www.springframework.org/schema/context/spring-context-4.2.xsd">
 		<property name="annotatedClasses">
 			<list>
 				<value>com.src.banking.entity.Client</value>
+				<value>com.src.banking.entity.Account</value>
+				<value>com.src.banking.entity.Branch</value>
+				<value>com.src.banking.entity.Branchmanager</value>
+				<value>com.src.banking.entity.Customer</value>
+				<value>com.src.banking.entity.CustDocument</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">
