@@ -44,38 +44,40 @@ public class ClientDao {
 			System.out.println("cli.getAddress() :: " + cli.getCustomerid());
 			System.out.println("cli.getAddress() :: " + cli.getDateofbirth());
 			System.out.println("cli.getAddress() :: " + cli.getPhone());
-			
+
 		}
 		return null;
 	}
+
 	/**
-	 * MULTIPART
+	 * 
 	 * @param enquiryId
 	 * @param email
 	 * @return
 	 */
-	public Customer applyNewAccount(int enquiryId,String email,Branch branch){
-		if(enquiryId != 0 && email != null){
+	public Customer applyNewAccount(int enquiryId, String email, Branch branch) {
+		if (enquiryId != 0 && email != null) {
 			Session session = sessionFactory.openSession();
 			Customer customer = new Customer();
 			customer.setBranch(branch);
 			customer.setEnqid(new BigDecimal(enquiryId));
 			customer.setEmail("email address ");
-			Transaction transaction  = session.beginTransaction();
+			// Transaction transaction = session.beginTransaction();
 			// as the branch doesn't exist till now
 			session.save(branch);
 			///////////////////////
-			session.save(customer);
+			// session.save(customer);
 			int customerId = customer.getId();
 			System.out.println(" customerId is : " + customerId);
-			transaction.commit();
-			session.close();
+			// transaction.commit();
+			// session.close();
+			sessionFactory.getCurrentSession().save(customer);
 			return customer;
 		}
 		return null;
 	}
 
-	public Account viewAccountBalance(int clientId){
+	public Account viewAccountBalance(int clientId) {
 		Session session = sessionFactory.openSession();
 		/////////////////////////
 		Account tempAccount = new Account();
@@ -88,5 +90,18 @@ public class ClientDao {
 		System.out.println("account balance is : " + account.getBalance());
 		tx.commit();
 		return account;
+	}
+
+	public Account viewAccountBalance(Account account) {
+		return (Account) sessionFactory.getCurrentSession().save(account);
+	}
+	
+	/**
+	 * This will deal save new account opening request.
+	 * @param customer
+	 * @return
+	 */
+	public Customer unregisteredUser(Customer customer) {
+		return (Customer)sessionFactory.getCurrentSession().save(customer);
 	}
 }
