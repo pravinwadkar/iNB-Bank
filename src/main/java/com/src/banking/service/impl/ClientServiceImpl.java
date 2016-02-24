@@ -1,8 +1,12 @@
 package com.src.banking.service.impl;
 
+import java.math.BigDecimal;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.src.banking.dao.ClientDao;
 import com.src.banking.entity.Account;
@@ -15,8 +19,6 @@ public class ClientServiceImpl implements ClientService{
 	
 	@Autowired
 	ClientDao clientDao;
-	@Autowired
-	HibernateTransactionManager transactionManager;
 
 	public boolean isClientAuthorized(int clientId) {
 		System.out.println("in ClientServiceImpl");
@@ -31,5 +33,17 @@ public class ClientServiceImpl implements ClientService{
 	
 	public Account viewAccountBalance(int clientId){
 		return clientDao.viewAccountBalance(clientId);
+	}
+	
+	@Transactional(propagation=Propagation.REQUIRED,readOnly=false)
+	public Account transferMoney(Account sender, Account reciever) {
+		BigDecimal fundTransferBalance = sender.getBalance().subtract(new BigDecimal("50"))  ;
+		sender.setBalance(fundTransferBalance);
+		return clientDao.viewAccountBalance(sender);
+	}
+	
+	@Transactional(propagation=Propagation.REQUIRED,readOnly=false)
+	public Customer unregisteredUser(Customer customer){
+		return clientDao.unregisteredUser(customer);
 	}
 }
