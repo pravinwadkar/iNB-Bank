@@ -19,7 +19,8 @@ public class Customer implements Serializable {
 
 	@Id
 	@Column(unique=true, nullable=false, length=50)
-	private String id;
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private int id;
 
 	@Column(length=50)
 	private String address;
@@ -42,8 +43,8 @@ public class Customer implements Serializable {
 	@Column(length=50)
 	private String email;
 
-	@Column(length=50)
-	private String enqid;
+	@Column(precision=10)
+	private BigDecimal enqid;
 
 	@Column(length=50)
 	private String firstname;
@@ -76,11 +77,11 @@ public class Customer implements Serializable {
 	public Customer() {
 	}
 
-	public String getId() {
+	public int getId() {
 		return this.id;
 	}
 
-	public void setId(String id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -140,11 +141,11 @@ public class Customer implements Serializable {
 		this.email = email;
 	}
 
-	public String getEnqid() {
+	public  BigDecimal getEnqid() {
 		return this.enqid;
 	}
 
-	public void setEnqid(String enqid) {
+	public void setEnqid(BigDecimal enqid) {
 		this.enqid = enqid;
 	}
 

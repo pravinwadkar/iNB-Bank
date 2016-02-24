@@ -20,7 +20,8 @@ public class Account implements Serializable {
 
 	@Id
 	@Column(unique=true, nullable=false, length=50)
-	private String id;
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private int id;
 
 	@Column(precision=20)
 	private BigDecimal accountnumber;
@@ -42,11 +43,11 @@ public class Account implements Serializable {
 	public Account() {
 	}
 
-	public String getId() {
+	public int getId() {
 		return this.id;
 	}
 
-	public void setId(String id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 

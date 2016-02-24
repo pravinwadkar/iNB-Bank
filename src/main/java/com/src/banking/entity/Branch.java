@@ -18,7 +18,8 @@ public class Branch implements Serializable {
 
 	@Id
 	@Column(unique=true, nullable=false, length=50)
-	private String id;
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private int id;
 
 	@Column(length=50)
 	private String address;
@@ -43,11 +44,11 @@ public class Branch implements Serializable {
 	public Branch() {
 	}
 
-	public String getId() {
+	public int getId() {
 		return this.id;
 	}
 
-	public void setId(String id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
