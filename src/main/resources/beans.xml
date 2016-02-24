@@ -30,13 +30,14 @@ http://www.springframework.org/schema/context/spring-context-4.2.xsd">
 				<value>com.src.banking.entity.Branchmanager</value>
 				<value>com.src.banking.entity.Customer</value>
 				<value>com.src.banking.entity.CustDocument</value>
+				<value>com.src.banking.entity.Enquiry</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">
 			<props>
 				<prop key="hibernate.dialect">org.hibernate.dialect.OracleDialect</prop>
 				<prop key="hibernate.show_sql">true</prop>
-				<prop key="hibernate.hbm2ddl.auto">update</prop>				
+				<prop key="hibernate.hbm2ddl.auto">create</prop>				
 			</props>
 		</property>
 	</bean>
