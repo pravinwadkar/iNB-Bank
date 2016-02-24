@@ -1,10 +1,14 @@
 package com.src.banking.service;
 
-import org.springframework.stereotype.Repository;
-
-import com.src.banking.entity.Client;
+import com.src.banking.entity.Account;
+import com.src.banking.entity.Branch;
+import com.src.banking.entity.Customer;
 
 
 public interface ClientService {
-	public boolean isValidClient(Client client);
+	public boolean isClientAuthorized(int clientId);
+	
+	public Customer applyNewAccount(int enquiryId,String email,Branch branch);
+	
+	public Account viewAccountBalance(int clientId);
 }
