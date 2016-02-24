@@ -8,43 +8,41 @@ import java.util.Set;
 
 /**
  * The persistent class for the BRANCH database table.
+ * @author SudarshanReddy
  * 
  */
 @Entity
-@Table(name="BRANCH")
-@NamedQuery(name="Branch.findAll", query="SELECT b FROM Branch b")
+@Table(name="branch")
 public class Branch implements Serializable {
+	
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@Column(unique=true, nullable=false, length=50)
 	private String id;
 
-	@Column(length=50)
+	@Column(name="address",length=50)
 	private String address;
 
-	@Column(length=50)
+	@Column(name="branchName",length=50)
 	private String branchname;
 
-	@Column(precision=10)
+	@Column(name="contact",precision=10)
 	private BigDecimal contact;
 
-	@Column(length=50)
-	private String ifsccode;
+	@Column(name="ifscCode",length=50)
+	private String ifscCode;
 
 	//bi-directional many-to-one association to Branchmanager
-	@OneToMany(mappedBy="branch")
-	private Set<Branchmanager> branchmanagers;
+	@OneToMany(mappedBy="branch",fetch=FetchType.LAZY)
+	private Set<BranchManager> branchManagers;
 
 	//bi-directional many-to-one association to Customer
 	@OneToMany(mappedBy="branch")
 	private Set<Customer> customers;
 
-	public Branch() {
-	}
-
 	public String getId() {
-		return this.id;
+		return id;
 	}
 
 	public void setId(String id) {
@@ -52,7 +50,7 @@ public class Branch implements Serializable {
 	}
 
 	public String getAddress() {
-		return this.address;
+		return address;
 	}
 
 	public void setAddress(String address) {
@@ -60,7 +58,7 @@ public class Branch implements Serializable {
 	}
 
 	public String getBranchname() {
-		return this.branchname;
+		return branchname;
 	}
 
 	public void setBranchname(String branchname) {
@@ -68,63 +66,35 @@ public class Branch implements Serializable {
 	}
 
 	public BigDecimal getContact() {
-		return this.contact;
+		return contact;
 	}
 
 	public void setContact(BigDecimal contact) {
 		this.contact = contact;
 	}
 
-	public String getIfsccode() {
-		return this.ifsccode;
+	public String getIfscCode() {
+		return ifscCode;
 	}
 
-	public void setIfsccode(String ifsccode) {
-		this.ifsccode = ifsccode;
+	public void setIfscCode(String ifscCode) {
+		this.ifscCode = ifscCode;
 	}
 
-	public Set<Branchmanager> getBranchmanagers() {
-		return this.branchmanagers;
+	public Set<BranchManager> getBranchManagers() {
+		return branchManagers;
 	}
 
-	public void setBranchmanagers(Set<Branchmanager> branchmanagers) {
-		this.branchmanagers = branchmanagers;
-	}
-
-	public Branchmanager addBranchmanager(Branchmanager branchmanager) {
-		getBranchmanagers().add(branchmanager);
-		branchmanager.setBranch(this);
-
-		return branchmanager;
-	}
-
-	public Branchmanager removeBranchmanager(Branchmanager branchmanager) {
-		getBranchmanagers().remove(branchmanager);
-		branchmanager.setBranch(null);
-
-		return branchmanager;
+	public void setBranchManagers(Set<BranchManager> branchManagers) {
+		this.branchManagers = branchManagers;
 	}
 
 	public Set<Customer> getCustomers() {
-		return this.customers;
+		return customers;
 	}
 
 	public void setCustomers(Set<Customer> customers) {
 		this.customers = customers;
 	}
-
-	public Customer addCustomer(Customer customer) {
-		getCustomers().add(customer);
-		customer.setBranch(this);
-
-		return customer;
-	}
-
-	public Customer removeCustomer(Customer customer) {
-		getCustomers().remove(customer);
-		customer.setBranch(null);
-
-		return customer;
-	}
-
+	
 }
