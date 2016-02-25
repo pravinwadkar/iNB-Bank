@@ -1,4 +1,4 @@
-package com.src.banking.dao;
+package com.inb.banking.dao;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -10,9 +10,9 @@ import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.src.banking.entity.Account;
-import com.src.banking.entity.Branch;
-import com.src.banking.entity.Customer;
+import com.inb.banking.entity.Account;
+import com.inb.banking.entity.Branch;
+import com.inb.banking.entity.Customer;
 
 @Repository
 public class ClientDao {
@@ -102,6 +102,11 @@ public class ClientDao {
 	 * @return
 	 */
 	public Customer unregisteredUser(Customer customer) {
-		return (Customer)sessionFactory.getCurrentSession().save(customer);
+		////////////////////////
+		sessionFactory.getCurrentSession().save(customer.getBranch());
+		///////////////////////
+		Integer customerId =(Integer) sessionFactory.getCurrentSession().save(customer);
+		customer.setCustomerid(new BigDecimal(customerId));
+		return customer;
 	}
 }

@@ -1,4 +1,4 @@
-package com.src.banking.service.impl;
+package com.inb.banking.service.impl;
 
 import java.math.BigDecimal;
 
@@ -8,11 +8,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.src.banking.dao.ClientDao;
-import com.src.banking.entity.Account;
-import com.src.banking.entity.Branch;
-import com.src.banking.entity.Customer;
-import com.src.banking.service.ClientService;
+import com.inb.banking.dao.ClientDao;
+import com.inb.banking.entity.Account;
+import com.inb.banking.entity.Branch;
+import com.inb.banking.entity.Customer;
+import com.inb.banking.service.ClientService;
 
 @Service
 public class ClientServiceImpl implements ClientService{

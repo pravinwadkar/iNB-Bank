@@ -1,4 +1,4 @@
-package com.src.banking.configuration;
+package com.inb.banking.configuration;
 
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;

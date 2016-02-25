@@ -24,18 +24,18 @@ http://www.springframework.org/schema/context/spring-context-4.2.xsd">
 		<property name="dataSource" ref="dataSource" />
 		<property name="annotatedClasses">
 			<list>
-				<value>com.src.banking.entity.Account</value>
-				<value>com.src.banking.entity.Branch</value>
-				<value>com.src.banking.entity.BranchManager</value>
-				<value>com.src.banking.entity.Customer</value>
-				<value>com.src.banking.entity.CustDocument</value>
+				<value>com.inb.banking.entity.Account</value>
+				<value>com.inb.banking.entity.Branch</value>
+				<value>com.inb.banking.entity.BranchManager</value>
+				<value>com.inb.banking.entity.Customer</value>
+				<value>com.inb.banking.entity.CustDocument</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">
 			<props>
 				<prop key="hibernate.dialect">org.hibernate.dialect.OracleDialect</prop>
 				<prop key="hibernate.show_sql">true</prop>
-				<prop key="hibernate.hbm2ddl.auto">create</prop>				
+				<prop key="hibernate.hbm2ddl.auto">update</prop>				
 			</props>
 		</property>
 	</bean>

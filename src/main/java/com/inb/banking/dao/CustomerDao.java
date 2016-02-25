@@ -1,11 +1,11 @@
-package com.src.banking.dao;
+package com.inb.banking.dao;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 
-import com.src.banking.entity.Customer;
+import com.inb.banking.entity.Customer;
 
 public class CustomerDao {
 	

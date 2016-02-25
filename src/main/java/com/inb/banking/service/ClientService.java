@@ -1,8 +1,8 @@
-package com.src.banking.service;
+package com.inb.banking.service;
 
-import com.src.banking.entity.Account;
-import com.src.banking.entity.Branch;
-import com.src.banking.entity.Customer;
+import com.inb.banking.entity.Account;
+import com.inb.banking.entity.Branch;
+import com.inb.banking.entity.Customer;
 
 
 public interface ClientService {

@@ -1,4 +1,4 @@
-package com.src.banking;
+package com.inb.banking;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;

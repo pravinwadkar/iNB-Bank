@@ -1,4 +1,4 @@
-package com.src.banking.controller;
+package com.inb.banking.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -6,14 +6,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.src.banking.entity.Account;
-import com.src.banking.entity.Branch;
-import com.src.banking.entity.Customer;
-import com.src.banking.service.ClientService;
-import com.src.banking.service.impl.ClientServiceImpl;
+import com.inb.banking.entity.Account;
+import com.inb.banking.entity.Branch;
+import com.inb.banking.entity.Customer;
+import com.inb.banking.service.ClientService;
 
 @RestController
 @RequestMapping
