@@ -6,7 +6,7 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -20,42 +20,28 @@ public class ClientDao {
 	@Autowired
 	SessionFactory sessionFactory;
 
-	public Customer getClientDetails(int clientId) {
-		// select * from client where clientId = ? and clientName=""
-
-		Session session = sessionFactory.openSession();
-		Criteria criteria = session.createCriteria("From Client");
-		List<Customer> customerDetails = criteria.list();
-
-		for (Customer client : customerDetails) {
-			Customer cli = (Customer) client;
-			System.out.println("cli.getClientId() :: " + cli.getId());
-			System.out.println("cli.getAddress() :: " + cli.getAddress());
-			System.out.println("cli.getAddress() :: " + cli.getApplicationstatus());
-			System.out.println("cli.getAddress() :: " + cli.getAuthorizedimagename());
-			System.out.println("cli.getAddress() :: " + cli.getEmail());
-			System.out.println("cli.getAddress() :: " + cli.getEnqid());
-			System.out.println("cli.getAddress() :: " + cli.getFirstname());
-			System.out.println("cli.getAddress() :: " + cli.getLastname());
-			System.out.println("cli.getAddress() :: " + cli.getUsername());
-			System.out.println("cli.getAddress() :: " + cli.getAccounts());
-			System.out.println("cli.getAddress() :: " + cli.getBranch());
-			System.out.println("cli.getAddress() :: " + cli.getCustDocuments());
-			System.out.println("cli.getAddress() :: " + cli.getCustomerid());
-			System.out.println("cli.getAddress() :: " + cli.getDateofbirth());
-			System.out.println("cli.getAddress() :: " + cli.getPhone());
-
-		}
-		return null;
+	public Customer getClientDetails(int id) {
+		Customer customer = (Customer) sessionFactory.getCurrentSession().get(Customer.class, id);
+		return customer;
 	}
 
+	
+	public Customer getRegisteredCustomer(int id) {
+		Customer customer = (Customer) sessionFactory.getCurrentSession().get(Customer.class, id);
+		return customer;
+	}
+	
+	public Customer registeredCustomerAccount(int id) {
+		Customer customer = (Customer) sessionFactory.getCurrentSession().get(Customer.class, id);
+		return customer;
+	}
 	/**
 	 * 
 	 * @param enquiryId
 	 * @param email
 	 * @return
 	 */
-	public Customer applyNewAccount(int enquiryId, String email, Branch branch) {
+	/*public Customer applyNewAccount(int enquiryId, String email, Branch branch) {
 		if (enquiryId != 0 && email != null) {
 			Session session = sessionFactory.openSession();
 			Customer customer = new Customer();
@@ -75,21 +61,10 @@ public class ClientDao {
 			return customer;
 		}
 		return null;
-	}
+	}*/
 
-	public Account viewAccountBalance(int clientId) {
-		Session session = sessionFactory.openSession();
-		/////////////////////////
-		Account tempAccount = new Account();
-		tempAccount.setBalance(new BigDecimal(20000));
-		Transaction tx = session.beginTransaction();
-		session.save(tempAccount);
-		clientId = tempAccount.getId();
-		/////////////////////////
-		Account account = (Account) session.load(Account.class, clientId);
-		System.out.println("account balance is : " + account.getBalance());
-		tx.commit();
-		return account;
+	public Account viewAccountBalance(int id) {
+		return (Account) sessionFactory.getCurrentSession().get(Account.class, id);
 	}
 
 	public Account viewAccountBalance(Account account) {
@@ -101,12 +76,20 @@ public class ClientDao {
 	 * @param customer
 	 * @return
 	 */
+	public String unregisteredUser(String value) {
+		String falseData = "{\"alreadyExists\" : \"false\"}";
+		String trueData = "{\"alreadyExists\" : \"true\"}";
+		Criteria cr = sessionFactory.getCurrentSession().createCriteria(Customer.class);
+		cr.add(Restrictions.ilike("email", value));
+		List<Customer> list = cr.list();
+		if(list != null && ! list.isEmpty()){
+			return trueData;
+		}
+		return falseData;
+	}
+	
 	public Customer unregisteredUser(Customer customer) {
-		////////////////////////
-		sessionFactory.getCurrentSession().save(customer.getBranch());
-		///////////////////////
-		Integer customerId =(Integer) sessionFactory.getCurrentSession().save(customer);
-		customer.setCustomerid(new BigDecimal(customerId));
-		return customer;
+		sessionFactory.getCurrentSession().save(customer);
+		return customer ;
 	}
 }

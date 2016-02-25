@@ -1,4 +1,4 @@
-package com.inb.banking.dao;
+package com.inb.banking.dao.impl;
 
 import java.util.List;
 
@@ -11,38 +11,35 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.inb.banking.entity.Customer;
+import com.inb.banking.dao.AdminDao;
+import com.inb.banking.entity.Admin;
 
 @Repository
-public class CustomerDao {
-	
+public class AdminDaoImpl implements AdminDao {
+
 	@Autowired
 	private SessionFactory sessionFactory;
 	
-	
 	@Transactional()
-	public Customer findCustomerByUsernameAndPassword(String username,String password) {
+	public Admin findAdminByUsernameAndPassword(String username,String password) {
 		Session session = null;
-		Customer cust = null;
+		Admin admin1 = null;
 		try {
 			session = sessionFactory.openSession();
-			Criteria cr = session.createCriteria(Customer.class);
+			Criteria cr = session.createCriteria(Admin.class);
 			cr.add(Restrictions.eq("userName", username));
 			cr.add(Restrictions.eq("password", password));
-			List<Customer> results = cr.list();
-			System.out.println(results);
+			List<Admin> results = cr.list();
 			if(results != null && results.size() > 0){
-			for (Customer customer : results) {
-				cust = customer;
+			for (Admin admin : results) {
+				admin1 = admin;
 			}	}
 		} catch (HibernateException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw e;
 		}finally {
 			session.close();
 		}
 		
-		return cust;
+		return admin1;
 	}
-
 }

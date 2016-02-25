@@ -1,6 +1,8 @@
 package com.inb.banking.entity;
 
 import java.io.Serializable;
+
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Set;
@@ -8,7 +10,6 @@ import java.util.Set;
 
 /**
  * The persistent class for the BRANCH database table.
- * @author SudarshanReddy
  * 
  */
 @Entity
@@ -18,38 +19,34 @@ public class Branch implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(unique=true, nullable=false, length=50)
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private int id;
+	@Column(unique=true, nullable=false, length=255)
+	private String id;
 
-	@Column(name="address",length=50)
+	@Column(name="address",length=255)
 	private String address;
 
-	@Column(name="branchName",length=50)
-	private String branchname;
+	@Column(name="branchName",length=255)
+	private String branchName;
 
-	@Column(name="contact",precision=10)
+	@Column(name="contact",precision=20)
 	private BigDecimal contact;
 
-	@Column(name="ifscCode",length=50)
+	@Column(name="ifscCode",length=255)
 	private String ifscCode;
 
 	//bi-directional many-to-one association to Branchmanager
-	@OneToMany(mappedBy="branch",fetch=FetchType.LAZY)
+	@OneToMany(mappedBy="branch",fetch=FetchType.LAZY,cascade=CascadeType.ALL)
 	private Set<BranchManager> branchManagers;
 
 	//bi-directional many-to-one association to Customer
-	@OneToMany(mappedBy="branch")
+	@OneToMany(mappedBy="branch",fetch=FetchType.LAZY,cascade=CascadeType.ALL)
 	private Set<Customer> customers;
 
-	public Branch() {
+	public String getId() {
+		return id;
 	}
 
-	public int getId() {
-		return this.id;
-	}
-
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
@@ -61,12 +58,12 @@ public class Branch implements Serializable {
 		this.address = address;
 	}
 
-	public String getBranchname() {
-		return branchname;
+	public String getBranchName() {
+		return branchName;
 	}
 
-	public void setBranchname(String branchname) {
-		this.branchname = branchname;
+	public void setBranchName(String branchName) {
+		this.branchName = branchName;
 	}
 
 	public BigDecimal getContact() {

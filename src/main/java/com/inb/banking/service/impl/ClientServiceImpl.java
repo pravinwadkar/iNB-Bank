@@ -3,7 +3,6 @@ package com.inb.banking.service.impl;
 import java.math.BigDecimal;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,26 +12,36 @@ import com.inb.banking.entity.Account;
 import com.inb.banking.entity.Branch;
 import com.inb.banking.entity.Customer;
 import com.inb.banking.service.ClientService;
+import com.inbbank.util.GenerateUUID;
 
 @Service
 public class ClientServiceImpl implements ClientService{
 	
 	@Autowired
 	ClientDao clientDao;
-
-	public boolean isClientAuthorized(int clientId) {
-		System.out.println("in ClientServiceImpl");
-		// if it is not first time login we need to provide the image and text questions?
-		clientDao.getClientDetails(clientId);
-		return false;
-	}
-
-	public Customer applyNewAccount(int enquiryId, String email,Branch branch) {
-		return clientDao.applyNewAccount(enquiryId,email,branch);
+	
+	@Transactional(propagation=Propagation.SUPPORTS,readOnly=true)
+	public Customer registeredCustomerAccount(int accountId) {
+		return clientDao.registeredCustomerAccount(accountId);
 	}
 	
+	@Transactional(propagation=Propagation.SUPPORTS,readOnly=true)
+	public Customer registeredCustomer(int clientId) {
+		return clientDao.getRegisteredCustomer(clientId);
+	}
+	
+	@Transactional(propagation=Propagation.SUPPORTS,readOnly=true)
+	public Customer isClientAuthorized(int clientId) {
+		return clientDao.getClientDetails(clientId);
+	}
+
+	/*public Customer applyNewAccount(int enquiryId, String email,Branch branch) {
+		return clientDao.applyNewAccount(enquiryId,email,branch);
+	}*/
+	@Transactional(propagation=Propagation.SUPPORTS,readOnly=true)
 	public Account viewAccountBalance(int clientId){
-		return clientDao.viewAccountBalance(clientId);
+		Account account = clientDao.viewAccountBalance(clientId);
+		return account;
 	}
 	
 	@Transactional(propagation=Propagation.REQUIRED,readOnly=false)
@@ -42,8 +51,15 @@ public class ClientServiceImpl implements ClientService{
 		return clientDao.viewAccountBalance(sender);
 	}
 	
-	@Transactional(propagation=Propagation.REQUIRED,readOnly=false)
-	public Customer unregisteredUser(Customer customer){
+	@Transactional(propagation=Propagation.REQUIRED,readOnly=true)
+	public String unregisteredUser(String customer){
 		return clientDao.unregisteredUser(customer);
 	}
+	
+	@Transactional(propagation=Propagation.REQUIRED,readOnly=false)
+	public Customer unregisteredUser(Customer account) {
+		account.setId(GenerateUUID.getRendomString());
+		return clientDao.unregisteredUser(account);
+	}
+
 }

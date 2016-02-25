@@ -1,7 +1,11 @@
 package com.inb.banking.entity;
 
+
 import java.io.Serializable;
+
 import javax.persistence.*;
+
+
 
 
 /**
