@@ -21,6 +21,7 @@ import com.inb.banking.rest.entity.Status;
 import com.inb.banking.rest.entity.WSAccount;
 import com.inb.banking.rest.entity.WSBranchCustomer;
 import com.inb.banking.rest.entity.WSCustomer;
+import com.inb.banking.rest.entity.WSTransfer;
 import com.inb.banking.service.ClientService;
 import com.inb.banking.service.IBankMailService;
 
@@ -74,11 +75,11 @@ public class ClientController {
 	}
 	
 	
-	@RequestMapping(value = "/clientHome/transferMoney", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public Account transferMoney(@RequestBody Account sender,@RequestBody Account reciever) {
-		System.out.println("sender.getBalance() is  " + sender.getBalance());
-		Account account = clientServiceImpl.transferMoney(sender,reciever);
-		return account;
+	@RequestMapping(value = "/registeredcustomer/transfer", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public Account transferMoney(@RequestBody WSTransfer wsTransfer) {
+		System.out.println("sender.getBalance() is  " + wsTransfer);
+		//Account account = clientServiceImpl.transferMoney(sender,reciever);
+		return null;
 	}
 	// only account status - pending records will be retrieved 
 	@RequestMapping(value = "/unregistereduser", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -134,4 +135,25 @@ public class ClientController {
 			return new Status(0, e.toString());
 		}
 	}
+	@RequestMapping(value = "/unregistereduser/{email}/{customerId}/verify", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+    public String unregistereduserVerifyEmail(@PathVariable(value = "email") String email,@PathVariable(value = "customerId") String customerId) {
+//         WSCustomer wSCustomer = clientServiceImpl.getRegisteredCustomer(customer);
+           
+//         if (wSCustomer.getEmail() != null) {
+                  iBankMailServiceImpl.sendMail("info.inbbank@gmail.com", "ashutosh.sharma@xoriant.com"/*customer.getEmail()*/, "Wel Come to IBank",
+                               "See you after mail ");
+//         }
+           
+           return "{\"Success\": \"Email sent\"}";
+    }
+	/**
+	 * For Branch Manager Viewing Customer details in Verify purpose based on Id
+	 * @return
+	 */
+	@RequestMapping(value = "/unregistereduser/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public WSBranchCustomer getCustomerDetailsById(@PathVariable(value="id") String id){
+		
+		return clientServiceImpl.getCustomerDetailsById(id);
+	}
+
 }

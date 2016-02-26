@@ -157,4 +157,12 @@ public class ClientDaoImpl implements ClientDao {
 		sessionFactory.getCurrentSession().save(custDocument);
 		return true;
 	}
+	
+	public Customer getCustomerDetailsById(String id) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Customer.class);
+		criteria.createAlias("branch", "branch",JoinType.LEFT_OUTER_JOIN);
+		criteria.createAlias("accounts", "accounts",JoinType.LEFT_OUTER_JOIN);
+		criteria.add(Restrictions.eq("id", id));
+		return (Customer)criteria.uniqueResult();
+	}
 }

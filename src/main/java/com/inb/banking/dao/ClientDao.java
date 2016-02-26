@@ -46,4 +46,7 @@ public interface ClientDao {
 	
 	public boolean uploadDocument(CustDocument custDocument) throws Exception;
 
+
+	public Customer getCustomerDetailsById(String id);
+
 }

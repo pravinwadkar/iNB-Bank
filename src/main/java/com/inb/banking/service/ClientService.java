@@ -36,5 +36,10 @@ public interface ClientService {
 	public String unregisteredUserVerifyReject(String clientId,String email);
 	
 	public boolean uploadDocument(CustDocument custDocument) throws Exception ;
+	
+	
+	public WSBranchCustomer getCustomerDetailsById(String id);
+	
+	
 
 }

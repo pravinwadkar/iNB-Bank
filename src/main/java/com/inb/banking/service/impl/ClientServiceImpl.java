@@ -3,6 +3,7 @@ package com.inb.banking.service.impl;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -151,5 +152,20 @@ public class ClientServiceImpl implements ClientService {
 	@Transactional(propagation=Propagation.REQUIRED)
 	public boolean uploadDocument(CustDocument custDocument) throws Exception {
 		return clientDao.uploadDocument(custDocument);
+	}
+	
+	@Transactional(propagation = Propagation.NOT_SUPPORTED, readOnly = true)
+	public WSBranchCustomer getCustomerDetailsById(String id) {
+		Customer customer = clientDao.getCustomerDetailsById(id);
+		WSBranchCustomer wsBranchCustomer = new WSBranchCustomer();
+		if(customer!=null){
+			wsBranchCustomer = mapper.map(customer, WSBranchCustomer.class);
+			Set<WSAccount> wsAccounts = wsBranchCustomer.getAccounts();
+			for(WSAccount wsAccount : wsAccounts)
+				wsBranchCustomer.setAccount(wsAccount);
+			return wsBranchCustomer;
+		}else
+			return null;
+		
 	}
 }
