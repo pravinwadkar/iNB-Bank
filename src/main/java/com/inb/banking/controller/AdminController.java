@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.Gson;
 import com.inb.banking.dao.AdminDao;
-import com.inb.banking.dao.CustomerDao;
 import com.inb.banking.entity.Admin;
 import com.inb.banking.entity.Customer;
 
