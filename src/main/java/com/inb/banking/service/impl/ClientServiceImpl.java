@@ -2,6 +2,7 @@ package com.inb.banking.service.impl;
 
 import java.math.BigDecimal;
 
+import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -10,6 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.inb.banking.dao.ClientDao;
 import com.inb.banking.entity.Account;
 import com.inb.banking.entity.Customer;
+import com.inb.banking.rest.entity.WSAccount;
+import com.inb.banking.rest.entity.WSCustomer;
 import com.inb.banking.service.ClientService;
 import com.inbbank.util.GenerateUUID;
 
@@ -18,30 +21,38 @@ public class ClientServiceImpl implements ClientService {
 
 	@Autowired
 	ClientDao clientDao;
-
+	@Autowired
+	private DozerBeanMapper mapper;
+	
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public Customer registeredCustomerAccount(int accountId) {
 		return clientDao.registeredCustomerAccount(accountId);
 	}
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public Customer registeredCustomer(int clientId) {
-		return clientDao.getRegisteredCustomer(clientId);
+	public WSCustomer registeredCustomer(int clientId) {
+		WSCustomer wsCustomer =null; 
+		Customer customer = clientDao.getRegisteredCustomer(clientId);
+		customer.setBranch(null);
+		wsCustomer = mapper.map(customer, WSCustomer.class);
+		return wsCustomer;
 	}
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public Customer isClientAuthorized(int clientId) {
-		return clientDao.getClientDetails(clientId);
+	public WSCustomer isClientAuthorized(int clientId) {
+		WSCustomer wsCustomer =null;
+		Customer customer = clientDao.getClientDetails(clientId);
+		customer.setBranch(null);
+		wsCustomer = mapper.map(customer, WSCustomer.class);
+		return wsCustomer;
 	}
 
-	/*
-	 * public Customer applyNewAccount(int enquiryId, String email,Branch
-	 * branch) { return clientDao.applyNewAccount(enquiryId,email,branch); }
-	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public Account viewAccountBalance(int clientId) {
+	public WSAccount viewAccountBalance(int clientId) {
+		WSAccount wsAccount =null;
 		Account account = clientDao.viewAccountBalance(clientId);
-		return account;
+		wsAccount = mapper.map(account, WSAccount.class);
+		return wsAccount;
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)

@@ -1,16 +1,15 @@
 package com.inb.banking.service;
 
 import com.inb.banking.entity.Account;
-import com.inb.banking.entity.Branch;
 import com.inb.banking.entity.Customer;
+import com.inb.banking.rest.entity.WSAccount;
+import com.inb.banking.rest.entity.WSCustomer;
 
 
 public interface ClientService {
-	public Customer isClientAuthorized(int clientId);
+	public WSCustomer isClientAuthorized(int clientId);
 	
-	//public Customer applyNewAccount(int enquiryId,String email,Branch branch);
-	
-	public Account viewAccountBalance(int clientId);
+	public WSAccount viewAccountBalance(int clientId);
 	// sender account will be returned
 	public Account transferMoney(Account sender,Account reciever);
 	// new account opening request
@@ -20,5 +19,5 @@ public interface ClientService {
 
 	public Customer registeredCustomerAccount(int clientId);
 	
-	public Customer registeredCustomer(int clientId);
+	public WSCustomer registeredCustomer(int clientId);
 }
