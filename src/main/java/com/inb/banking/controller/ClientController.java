@@ -31,6 +31,7 @@ public class ClientController {
 
 	@Autowired
 	IBankMailService iBankMailServiceImpl;
+	
 	/**
 	 * This URL will check in DB if the user is valid or not. If valid provides
 	 * the userID back. If login is valid the client login screen will be
@@ -55,7 +56,8 @@ public class ClientController {
 	public WSCustomer getRegisteredCustomer(@RequestBody Customer customer) {
 		// DONE
 		WSCustomer wSCustomer = clientServiceImpl.getRegisteredCustomer(customer);
-		if (customer.getEmail() != null) {
+		
+		if (wSCustomer.getEmail() != null) {
 			iBankMailServiceImpl.sendMail("info.inbbank@gmail.com", "pravin.wadkar@Xoriant.Com"/*customer.getEmail()*/, "Wel Come to IBank",
 					"See you after mail ");
 		}

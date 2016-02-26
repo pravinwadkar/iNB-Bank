@@ -79,13 +79,16 @@ public class ClientDaoImpl implements ClientDao{
 	}
 
 
-	public Customer getValidateCustomer(int customerId, String userName, String password) {
+	public Customer getValidateCustomer( String userName, String password) {
+		Customer customer = null;
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Customer.class);
-		criteria.add(Restrictions.eq("userName", userName));
+		criteria.add(Restrictions.eq("customerId", BigDecimal.valueOf(Long.valueOf(userName))));
 		criteria.add(Restrictions.eq("password", password));
-		Customer customer = (Customer)criteria.uniqueResult();
+		Object customerObj = criteria.uniqueResult();
+		if(customerObj != null){
+			customer = (Customer)customerObj;
+		}
 		return customer;
-		
 	}
 
 	@SuppressWarnings("unchecked")

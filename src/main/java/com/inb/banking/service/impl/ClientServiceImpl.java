@@ -26,7 +26,9 @@ public class ClientServiceImpl implements ClientService {
 	ClientDao clientDao;
 	@Autowired
 	private DozerBeanMapper mapper;
-	
+
+	String InvalidCustomer = "Invalid credentials";
+
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public Customer registeredCustomerAccount(int accountId) {
 		return clientDao.registeredCustomerAccount(accountId);
@@ -34,7 +36,7 @@ public class ClientServiceImpl implements ClientService {
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public WSCustomer registeredCustomer(int clientId) {
-		WSCustomer wsCustomer =null; 
+		WSCustomer wsCustomer = null;
 		Customer customer = clientDao.getRegisteredCustomer(clientId);
 		customer.setBranch(null);
 		wsCustomer = mapper.map(customer, WSCustomer.class);
@@ -43,7 +45,7 @@ public class ClientServiceImpl implements ClientService {
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public WSCustomer isClientAuthorized(int clientId) {
-		WSCustomer wsCustomer =null;
+		WSCustomer wsCustomer = null;
 		Customer customer = clientDao.getClientDetails(clientId);
 		customer.setBranch(null);
 		wsCustomer = mapper.map(customer, WSCustomer.class);
@@ -52,7 +54,7 @@ public class ClientServiceImpl implements ClientService {
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public WSAccount viewAccountBalance(int clientId) {
-		WSAccount wsAccount =null;
+		WSAccount wsAccount = null;
 		Account account = clientDao.viewAccountBalance(clientId);
 		wsAccount = mapper.map(account, WSAccount.class);
 		return wsAccount;
@@ -75,64 +77,68 @@ public class ClientServiceImpl implements ClientService {
 		account.setId(GenerateUUID.getRendomString());
 		return clientDao.unregisteredUser(account);
 	}
+
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public WSCustomer getRegisteredCustomer(Customer customer) {
 
-		WSCustomer wsCustomer =null;
-		List<WSCustomer> list = new ArrayList<WSCustomer>(); 
-		Customer customerData = clientDao.getValidateCustomer(customer.getCustomerId().intValue(),customer.getUserName(),customer.getPassword());
-		//customerData.setBranch(null);
-		wsCustomer = mapper.map(customerData, WSCustomer.class);
+		WSCustomer wsCustomer = null;
+		List<WSCustomer> list = new ArrayList<WSCustomer>();
+		Customer customerData = clientDao.getValidateCustomer(customer.getUserName(), customer.getPassword());
+		// customerData.setBranch(null);
+		if (customerData != null) {
+			wsCustomer = mapper.map(customerData, WSCustomer.class);
+		} else {
+			wsCustomer = new WSCustomer();
+			wsCustomer.setException(InvalidCustomer);
+		}
 		return wsCustomer;
 	}
-	
+
 	@Transactional(propagation = Propagation.NOT_SUPPORTED, readOnly = true)
 	public List<WSBranchCustomer> getAllUnregisteredUsers() {
 		List<Customer> customers = clientDao.getAllUnregisteredUsers();
 		List<WSBranchCustomer> wsBranchCustomers = new ArrayList<WSBranchCustomer>(customers.size());
-		if(customers.size()>0){
-			for(Customer customer : customers){
-				 WSBranchCustomer wsBranchCustomer = mapper.map(customer, WSBranchCustomer.class);
-				 for(WSAccount wsAccount : wsBranchCustomer.getAccounts())
-					 wsBranchCustomer.setAccount(wsAccount);
-				 wsBranchCustomers.add(wsBranchCustomer);
+		if (customers.size() > 0) {
+			for (Customer customer : customers) {
+				WSBranchCustomer wsBranchCustomer = mapper.map(customer, WSBranchCustomer.class);
+				for (WSAccount wsAccount : wsBranchCustomer.getAccounts())
+					wsBranchCustomer.setAccount(wsAccount);
+				wsBranchCustomers.add(wsBranchCustomer);
 			}
-			
-				
+
 		}
 		return wsBranchCustomers;
 	}
-	
+
 	@Transactional(propagation = Propagation.NOT_SUPPORTED, readOnly = true)
 	public List<WSBranchCustomer> getAllRegisteredUsers() {
 		List<Customer> customers = clientDao.getAllRegisteredUsers();
 		List<WSBranchCustomer> wsBranchCustomers = new ArrayList<WSBranchCustomer>(customers.size());
-		for(Customer customer : customers){
+		for (Customer customer : customers) {
 			WSBranchCustomer wsBranchCustomer = mapper.map(customer, WSBranchCustomer.class);
 			wsBranchCustomer.setAccounthash(wsBranchCustomer.getAccounts());
 			wsBranchCustomers.add(wsBranchCustomer);
 		}
-			
+
 		return wsBranchCustomers;
 	}
-	
+
 	@Transactional(propagation = Propagation.NOT_SUPPORTED, readOnly = true)
 	public List<WSBranchCustomer> getAllRejectedUsers() {
 		List<Customer> customers = clientDao.getAllRejectedUsers();
 		List<WSBranchCustomer> wsBranchCustomers = new ArrayList<WSBranchCustomer>(customers.size());
-		if(customers.size()>0){
-			for(Customer customer : customers){
-				 WSBranchCustomer wsBranchCustomer = mapper.map(customer, WSBranchCustomer.class);
-				 for(WSAccount wsAccount : wsBranchCustomer.getAccounts())
-					 wsBranchCustomer.setAccount(wsAccount);
-				 wsBranchCustomers.add(wsBranchCustomer);
+		if (customers.size() > 0) {
+			for (Customer customer : customers) {
+				WSBranchCustomer wsBranchCustomer = mapper.map(customer, WSBranchCustomer.class);
+				for (WSAccount wsAccount : wsBranchCustomer.getAccounts())
+					wsBranchCustomer.setAccount(wsAccount);
+				wsBranchCustomers.add(wsBranchCustomer);
 			}
-			
-				
+
 		}
 		return wsBranchCustomers;
 	}
-	
+
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public String unregisteredUserVerifyReject(String clientId, String email) {
 		return clientDao.unregisteredUserVerifyReject(clientId, email);

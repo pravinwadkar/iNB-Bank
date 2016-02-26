@@ -38,7 +38,7 @@ public class WSCustomer {
 	private String userName;
 	private WSBranch branch;
 	
-	
+	private String exception;
 	
 
 	public WSBranch getBranch() {
@@ -159,6 +159,14 @@ public class WSCustomer {
 
 	public void setUserName(String userName) {
 		this.userName = userName;
+	}
+
+	public String getException() {
+		return exception;
+	}
+
+	public void setException(String exception) {
+		this.exception = exception;
 	}
 	
 

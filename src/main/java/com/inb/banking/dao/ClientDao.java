@@ -31,7 +31,7 @@ public interface ClientDao {
 	
 	public Customer unregisteredUser(Customer customer) ;
 	
-	public Customer  getValidateCustomer(int customerId,String userName,String password);
+	public Customer  getValidateCustomer(String userName,String password);
 	
 	public List<Customer> getAllUnregisteredUsers();
 
