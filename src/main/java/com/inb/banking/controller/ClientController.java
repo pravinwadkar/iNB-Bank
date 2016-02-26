@@ -75,11 +75,10 @@ public class ClientController {
 	}
 	
 	
-	@RequestMapping(value = "/registeredcustomer/transfer", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public Account transferMoney(@RequestBody WSTransfer wsTransfer) {
-		System.out.println("sender.getBalance() is  " + wsTransfer);
-		//Account account = clientServiceImpl.transferMoney(sender,reciever);
-		return null;
+	@RequestMapping(value = "/registeredcustomer/transfer", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public String transferMoney(@RequestBody WSTransfer wsTransfer) {
+		String account = clientServiceImpl.transferMoney(wsTransfer);
+		return account;
 	}
 	// only account status - pending records will be retrieved 
 	@RequestMapping(value = "/unregistereduser", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

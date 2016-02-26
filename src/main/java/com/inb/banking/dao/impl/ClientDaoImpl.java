@@ -17,6 +17,7 @@ import com.inb.banking.entity.Account;
 import com.inb.banking.entity.CustDocument;
 import com.inb.banking.entity.Customer;
 import com.inb.banking.rest.entity.WSCustomer;
+import com.inb.banking.rest.entity.WSTransfer;
 import com.inbbank.util.ApplicationStatus;
 import com.inbbank.util.GenerateUUID;
 
@@ -69,6 +70,19 @@ public class ClientDaoImpl implements ClientDao {
 
 		
 		return accList;
+	}
+	
+	public BigDecimal getAccountBalance(int accountNumber) {
+		
+		BigDecimal balance = null;
+		List<Account> accList = new ArrayList<Account>();
+		Criteria cr = sessionFactory.getCurrentSession().createCriteria(Account.class);
+		cr.add(Restrictions.eq("accountNumber",new BigDecimal(accountNumber)));
+		accList = cr.list();
+		if(accList != null && accList.size() > 0){
+			balance = ((Account)accList.get(0)).getBalance();
+		}
+		return balance;
 	}
 
 	public Account viewAccountBalance(Account account) {
@@ -164,5 +178,18 @@ public class ClientDaoImpl implements ClientDao {
 		criteria.createAlias("accounts", "accounts",JoinType.LEFT_OUTER_JOIN);
 		criteria.add(Restrictions.eq("id", id));
 		return (Customer)criteria.uniqueResult();
+	}
+
+	public void transfer(WSTransfer wsTransfer) {
+		Criteria criteriaC = sessionFactory.getCurrentSession().createCriteria(Account.class);
+		criteriaC.add(Restrictions.eq("accountNumber", new BigDecimal(wsTransfer.getClientAccount())));
+		Account accountC = (Account)criteriaC.uniqueResult();
+		Criteria criteriaR = sessionFactory.getCurrentSession().createCriteria(Account.class);
+		criteriaR.add(Restrictions.eq("accountNumber", new BigDecimal(wsTransfer.getRecevierAccount())));
+		Account accountR = (Account)criteriaR.uniqueResult();
+		accountC.setBalance(accountC.getBalance().subtract((new BigDecimal(wsTransfer.getAmount()))));
+		accountR.setBalance(accountR.getBalance().add((new BigDecimal(wsTransfer.getAmount()))));
+		sessionFactory.getCurrentSession().save(accountR);
+		sessionFactory.getCurrentSession().save(accountC);
 	}
 }

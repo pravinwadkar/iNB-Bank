@@ -18,6 +18,7 @@ import com.inb.banking.entity.Customer;
 import com.inb.banking.rest.entity.WSAccount;
 import com.inb.banking.rest.entity.WSBranchCustomer;
 import com.inb.banking.rest.entity.WSCustomer;
+import com.inb.banking.rest.entity.WSTransfer;
 import com.inb.banking.service.ClientService;
 import com.inbbank.util.GenerateUUID;
 
@@ -30,6 +31,8 @@ public class ClientServiceImpl implements ClientService {
 	private DozerBeanMapper mapper;
 
 	String InvalidCustomer = "Invalid credentials";
+	
+	String transferStatus = "{\"Status\":\"Success\", \"Message\":\"Done Successfully\"}";
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public Customer registeredCustomerAccount(int accountId) {
@@ -66,10 +69,17 @@ public class ClientServiceImpl implements ClientService {
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
-	public Account transferMoney(Account sender, Account reciever) {
-		BigDecimal fundTransferBalance = sender.getBalance().subtract(new BigDecimal("50"));
-		sender.setBalance(fundTransferBalance);
-		return clientDao.viewAccountBalance(sender);
+	public String transferMoney(WSTransfer wsTransfer) {
+
+		BigDecimal balance = clientDao.getAccountBalance(Integer.parseInt(wsTransfer.getClientAccount()));
+		if (balance.intValue() >= Integer.parseInt(wsTransfer.getAmount())) {
+			clientDao.transfer(wsTransfer);			
+		} else // insufficient balance
+		{
+			
+		}
+
+		return transferStatus;
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
@@ -148,24 +158,24 @@ public class ClientServiceImpl implements ClientService {
 	public String unregisteredUserVerifyReject(String clientId, String email) {
 		return clientDao.unregisteredUserVerifyReject(clientId, email);
 	}
-	
-	@Transactional(propagation=Propagation.REQUIRED)
+
+	@Transactional(propagation = Propagation.REQUIRED)
 	public boolean uploadDocument(CustDocument custDocument) throws Exception {
 		return clientDao.uploadDocument(custDocument);
 	}
-	
+
 	@Transactional(propagation = Propagation.NOT_SUPPORTED, readOnly = true)
 	public WSBranchCustomer getCustomerDetailsById(String id) {
 		Customer customer = clientDao.getCustomerDetailsById(id);
 		WSBranchCustomer wsBranchCustomer = new WSBranchCustomer();
-		if(customer!=null){
+		if (customer != null) {
 			wsBranchCustomer = mapper.map(customer, WSBranchCustomer.class);
 			Set<WSAccount> wsAccounts = wsBranchCustomer.getAccounts();
-			for(WSAccount wsAccount : wsAccounts)
+			for (WSAccount wsAccount : wsAccounts)
 				wsBranchCustomer.setAccount(wsAccount);
 			return wsBranchCustomer;
-		}else
+		} else
 			return null;
-		
+
 	}
 }

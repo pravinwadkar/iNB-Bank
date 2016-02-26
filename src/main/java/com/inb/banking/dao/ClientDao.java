@@ -1,5 +1,6 @@
 package com.inb.banking.dao;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.inb.banking.entity.Account;
 import com.inb.banking.entity.CustDocument;
 import com.inb.banking.entity.Customer;
+import com.inb.banking.rest.entity.WSTransfer;
 
 @Repository
 public interface ClientDao {
@@ -48,5 +50,11 @@ public interface ClientDao {
 
 
 	public Customer getCustomerDetailsById(String id);
+	
+	public BigDecimal getAccountBalance(int accountNumber);
+
+
+	public void transfer(WSTransfer wsTransfer);
+
 
 }

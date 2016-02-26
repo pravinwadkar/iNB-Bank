@@ -8,6 +8,7 @@ import com.inb.banking.entity.Customer;
 import com.inb.banking.rest.entity.WSAccount;
 import com.inb.banking.rest.entity.WSBranchCustomer;
 import com.inb.banking.rest.entity.WSCustomer;
+import com.inb.banking.rest.entity.WSTransfer;
 
 
 public interface ClientService {
@@ -15,7 +16,7 @@ public interface ClientService {
 	
 	public List<WSAccount> viewAccountBalance(int clientId);
 	// sender account will be returned
-	public Account transferMoney(Account sender,Account reciever);
+	public String transferMoney(WSTransfer wsTransfer);
 	// new account opening request
 	public String unregisteredUser(String account);
 	
