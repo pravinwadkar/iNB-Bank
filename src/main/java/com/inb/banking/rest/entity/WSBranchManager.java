@@ -15,6 +15,8 @@ public class WSBranchManager {
 	private String lastName;
 	private Long phone;
 	private WSBranch branch;
+	private WSBranch branchPOJO;
+	private String branchName;
 	private String userName;
 	private String password;
 	public String getId() {
@@ -77,5 +79,19 @@ public class WSBranchManager {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	public WSBranch getBranchPOJO() {
+		return branchPOJO;
+	}
+	public void setBranchPOJO(WSBranch branchPOJO) {
+		this.branchPOJO = branchPOJO;
+	}
+	public String getBranchName() {
+		return branchName;
+	}
+	public void setBranchName(String branchName) {
+		this.branchName = branchName;
+	}
+	
+	
 	
 }

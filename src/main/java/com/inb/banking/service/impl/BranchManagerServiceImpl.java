@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 
+import com.inb.banking.dao.BranchDAO;
 import com.inb.banking.dao.BranchManagerDAO;
+import com.inb.banking.entity.Branch;
 import com.inb.banking.entity.BranchManager;
 import com.inb.banking.rest.entity.WSBranchManager;
 import com.inb.banking.service.BranchManagerSerice;
@@ -22,20 +24,26 @@ public class BranchManagerServiceImpl implements BranchManagerSerice{
 	private BranchManagerDAO branchManagerDAO;
 	
 	@Autowired
+	private BranchDAO branchDAO;
+	
+	@Autowired
 	private DozerBeanMapper mapper;
 	
 	
 	@org.springframework.transaction.annotation.Transactional(propagation=Propagation.REQUIRED,readOnly=false)
-	public WSBranchManager createBranchManager(BranchManager branchmanager) {
-		branchmanager.setId(GenerateUUID.getRendomString());
+	public WSBranchManager createBranchManager(WSBranchManager wsbranchmanager) {
+		wsbranchmanager.setBranch(wsbranchmanager.getBranchPOJO());
+		wsbranchmanager.setId(GenerateUUID.getRendomString());
+		BranchManager branchmanager = mapper.map(wsbranchmanager, BranchManager.class);
+		Branch branch = branchDAO.getBranchDetailsByName(branchmanager.getBranch().getBranchName());
+		branchmanager.setBranch(branch);
 		branchManagerDAO.createBranchManager(branchmanager);
-		WSBranchManager wsBranchManager = mapper.map(branchmanager, WSBranchManager.class);
-		return wsBranchManager;
+		return wsbranchmanager;
 	}
 
 	@org.springframework.transaction.annotation.Transactional(propagation=Propagation.NOT_SUPPORTED,
 	readOnly=true)
-	public WSBranchManager branchManagerLogin(BranchManager branchManager) {
+	public WSBranchManager branchManagerLogin(WSBranchManager branchManager) {
 		BranchManager branchManager2 = branchManagerDAO.branchManagerLogin(branchManager);
 		WSBranchManager wsBranchManager = mapper.map(branchManager2, WSBranchManager.class);
 		return wsBranchManager;

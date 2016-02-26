@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import com.inb.banking.dao.BranchManagerDAO;
 import com.inb.banking.entity.BranchManager;
+import com.inb.banking.rest.entity.WSBranchManager;
 
 
 @Repository("branchManagerDAO")
@@ -20,12 +21,12 @@ public class BranchManagerDAOImpl implements BranchManagerDAO{
 	private SessionFactory sessionFactory;
 	
 	
-	public BranchManager branchManagerLogin(BranchManager branchManager) {
+	public BranchManager branchManagerLogin(WSBranchManager branchManager) {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(BranchManager.class);
 		criteria.createAlias("branch", "branch");
 		criteria.add(Restrictions.eq("userName", branchManager.getUserName() ));
 		criteria.add(Restrictions.eq("password", branchManager.getPassword()));
-		criteria.add(Restrictions.eq("branch.branchName", branchManager.getBranch().getBranchName()));
+		criteria.add(Restrictions.eq("branch.branchName", branchManager.getBranchName()));
 		return (BranchManager) criteria.uniqueResult();
 	}
 

@@ -18,4 +18,6 @@ public interface BranchDAO {
 
 	public void createBranch(Branch branch);
 
+	public Branch getBranchDetailsByName(String branchName);
+
 }

@@ -11,9 +11,9 @@ import com.inb.banking.rest.entity.WSBranchManager;
 
 public interface BranchManagerSerice {
 	
-	public WSBranchManager createBranchManager(BranchManager branchmanager);
+	public WSBranchManager createBranchManager(WSBranchManager branchmanager);
 
-	public WSBranchManager branchManagerLogin(BranchManager branchManager);
+	public WSBranchManager branchManagerLogin(WSBranchManager branchManager);
 
 	public List<WSBranchManager> getAllBranchManagerDeatils();
 	

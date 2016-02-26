@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -34,6 +35,13 @@ public class BranchDAOImpl implements BranchDAO {
 	
 	public void createBranch(Branch branch) {
 		sessionFactory.getCurrentSession().save(branch);
+	}
+
+
+	public Branch getBranchDetailsByName(String branchName) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Branch.class);
+		criteria.add(Restrictions.eq("branchName", branchName));
+		return (Branch)criteria.uniqueResult();
 	}
 
 }

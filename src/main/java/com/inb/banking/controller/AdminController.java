@@ -51,9 +51,9 @@ public class AdminController {
 		return logoutMsg;
 	}
 	
-	@RequestMapping(value = "/logout", method = RequestMethod.OPTIONS, consumes = MediaType.APPLICATION_JSON_VALUE)
+	/*@RequestMapping(value = "/logout", method = RequestMethod.OPTIONS, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public void adminlogoutOptions() {
 		
-	}
+	}*/
 
 }
