@@ -1,5 +1,6 @@
 package com.inb.banking.dao.impl;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,8 +25,16 @@ public class ClientDaoImpl implements ClientDao{
 	SessionFactory sessionFactory;
 
 	public Customer getClientDetails(int id) {
-		Customer customer = (Customer) sessionFactory.getCurrentSession().get(Customer.class, id);
-		return customer;
+		
+		Customer cust = null;
+		Criteria cr = sessionFactory.getCurrentSession().createCriteria(Customer.class);
+		cr.add(Restrictions.eq("customerId", BigDecimal.valueOf(id)));
+		List<Customer> list = cr.list();
+		if(list != null && ! list.isEmpty()){
+			
+			return list.get(0);
+		}
+		return cust;
 	}
 
 	
