@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import com.inb.banking.entity.Account;
+import com.inb.banking.entity.CustDocument;
 import com.inb.banking.entity.Customer;
 
 @Repository
@@ -18,7 +19,7 @@ public interface ClientDao {
 	
 	public Customer registeredCustomerAccount(int id) ;
 
-	public Account viewAccountBalance(int id) ;
+	public List<Account> viewAccountBalance(int id) ;
 
 	public Account viewAccountBalance(Account account) ;
 	
@@ -42,4 +43,7 @@ public interface ClientDao {
 	public List<Customer> getAllRejectedUsers();
 	
 	public String unregisteredUserVerifyReject(String clientId,String email);
+	
+	public boolean uploadDocument(CustDocument custDocument) throws Exception;
+
 }

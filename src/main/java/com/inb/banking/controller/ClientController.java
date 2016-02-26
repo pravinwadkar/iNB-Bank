@@ -12,9 +12,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.inb.banking.entity.Account;
+import com.inb.banking.entity.CustDocument;
 import com.inb.banking.entity.Customer;
+import com.inb.banking.rest.entity.Status;
 import com.inb.banking.rest.entity.WSAccount;
 import com.inb.banking.rest.entity.WSBranchCustomer;
 import com.inb.banking.rest.entity.WSCustomer;
@@ -65,7 +68,7 @@ public class ClientController {
 	}
 	
 	@RequestMapping(value = "/registeredcustomer/account/{clientId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public WSAccount viewAccountBalance(@PathVariable(value = "clientId") int clientId) {
+	public List<WSAccount> viewAccountBalance(@PathVariable(value = "clientId") int clientId) {
 		// DONE
 		return clientServiceImpl.viewAccountBalance(clientId);
 	}
@@ -114,5 +117,21 @@ public class ClientController {
 	public List<WSBranchCustomer> getAllRejectedUsers(){
 		return clientServiceImpl.getAllRejectedUsers();
 	}
-	
+
+	@RequestMapping(value = "/document", method = RequestMethod.POST)
+	public @ResponseBody Status uploadDocument(@RequestParam("addressProof") MultipartFile addressProof,@RequestParam("ageProof") MultipartFile ageProof,@RequestParam("email") String email) {
+		
+		try {
+			
+			CustDocument custDocument = new CustDocument();
+			custDocument.setImageaddress(addressProof.getBytes());
+			custDocument.setImageage(ageProof.getBytes());
+			custDocument.setEmail(email);
+			clientServiceImpl.uploadDocument(custDocument);
+			return new Status();
+			
+		} catch (Exception e) {
+			return new Status(0, e.toString());
+		}
+	}
 }

@@ -30,37 +30,41 @@ http://www.springframework.org/schema/context/spring-context-4.2.xsd">
 				<value>com.inb.banking.entity.Customer</value>
 				<value>com.inb.banking.entity.CustDocument</value>
 				<value>com.inb.banking.entity.Admin</value>
-				
+
 			</list>
 		</property>
 		<property name="hibernateProperties">
 			<props>
 				<prop key="hibernate.dialect">org.hibernate.dialect.OracleDialect</prop>
 				<prop key="hibernate.show_sql">true</prop>
-				<prop key="hibernate.hbm2ddl.auto">update</prop>				
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
 			</props>
 		</property>
 	</bean>
-	
+
 	<bean id="hibernateTransactionManager"
 		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
-	<bean id ="mapper" class="org.dozer.DozerBeanMapper"/>
-	
-	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
-              <property name="host" value="smtp.gmail.com" />
-              <property name="port" value="587" />
-              <property name="username" value="info.inbbank@gmail.com" />
-              <property name="password" value="nmsipjrs" />
 
-              <property name="javaMailProperties">
-                     <props>
-                           <prop key="mail.smtp.auth">true</prop>
-                           <prop key="mail.smtp.starttls.enable">true</prop>
-                     </props>
-              </property>
-       </bean>
-	
+	<bean id="mapper" class="org.dozer.DozerBeanMapper" />
+
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="smtp.gmail.com" />
+		<property name="port" value="587" />
+		<property name="username" value="info.inbbank@gmail.com" />
+		<property name="password" value="nmsipjrs" />
+
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.smtp.auth">true</prop>
+				<prop key="mail.smtp.starttls.enable">true</prop>
+			</props>
+		</property>
+	</bean>
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="maxUploadSize" value="268435456" /> <!-- 256 megs -->
+	</bean>
+
 </beans>

@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.inb.banking.dao.ClientDao;
 import com.inb.banking.entity.Account;
+import com.inb.banking.entity.CustDocument;
 import com.inb.banking.entity.Customer;
 import com.inb.banking.rest.entity.WSAccount;
 import com.inb.banking.rest.entity.WSBranchCustomer;
@@ -38,7 +39,6 @@ public class ClientServiceImpl implements ClientService {
 	public WSCustomer registeredCustomer(int clientId) {
 		WSCustomer wsCustomer = null;
 		Customer customer = clientDao.getRegisteredCustomer(clientId);
-		customer.setBranch(null);
 		wsCustomer = mapper.map(customer, WSCustomer.class);
 		return wsCustomer;
 	}
@@ -53,11 +53,15 @@ public class ClientServiceImpl implements ClientService {
 	}
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public WSAccount viewAccountBalance(int clientId) {
+	public List<WSAccount> viewAccountBalance(int clientId) {
 		WSAccount wsAccount = null;
-		Account account = clientDao.viewAccountBalance(clientId);
-		wsAccount = mapper.map(account, WSAccount.class);
-		return wsAccount;
+		List<WSAccount> wsaccount = new ArrayList<WSAccount>();
+		List<Account> account = clientDao.viewAccountBalance(clientId);
+		for (Account account2 : account) {
+			wsAccount = mapper.map(account2, WSAccount.class);
+			wsaccount.add(wsAccount);
+		}
+		return wsaccount;
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
@@ -142,5 +146,10 @@ public class ClientServiceImpl implements ClientService {
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public String unregisteredUserVerifyReject(String clientId, String email) {
 		return clientDao.unregisteredUserVerifyReject(clientId, email);
+	}
+	
+	@Transactional(propagation=Propagation.REQUIRED)
+	public boolean uploadDocument(CustDocument custDocument) throws Exception {
+		return clientDao.uploadDocument(custDocument);
 	}
 }
