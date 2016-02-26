@@ -28,4 +28,6 @@ public interface ClientDao {
 	public String unregisteredUser(String value) ;
 	
 	public Customer unregisteredUser(Customer customer) ;
+	
+	public Customer  getValidateCustomer(int customerId,String userName,String password);
 }

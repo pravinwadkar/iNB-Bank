@@ -20,4 +20,6 @@ public interface ClientService {
 	public Customer registeredCustomerAccount(int clientId);
 	
 	public WSCustomer registeredCustomer(int clientId);
+	
+	public WSCustomer getRegisteredCustomer(Customer account);
 }

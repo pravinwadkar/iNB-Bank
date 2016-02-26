@@ -1,6 +1,8 @@
 package com.inb.banking.service.impl;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,6 +73,16 @@ public class ClientServiceImpl implements ClientService {
 	public Customer unregisteredUser(Customer account) {
 		account.setId(GenerateUUID.getRendomString());
 		return clientDao.unregisteredUser(account);
+	}
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public WSCustomer getRegisteredCustomer(Customer customer) {
+
+		WSCustomer wsCustomer =null;
+		List<WSCustomer> list = new ArrayList<WSCustomer>(); 
+		Customer customerData = clientDao.getValidateCustomer(customer.getCustomerId().intValue(),customer.getUserName(),customer.getPassword());
+		//customerData.setBranch(null);
+		wsCustomer = mapper.map(customerData, WSCustomer.class);
+		return wsCustomer;
 	}
 
 }

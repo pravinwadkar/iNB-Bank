@@ -1,5 +1,6 @@
 package com.inb.banking.dao.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -8,11 +9,13 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.inb.banking.dao.ClientDao;
 import com.inb.banking.entity.Account;
 import com.inb.banking.entity.Customer;
+import com.inb.banking.rest.entity.WSCustomer;
 
 @Repository
-public class ClientDaoImpl {
+public class ClientDaoImpl implements ClientDao{
 
 	@Autowired
 	SessionFactory sessionFactory;
@@ -61,5 +64,15 @@ public class ClientDaoImpl {
 	public Customer unregisteredUser(Customer customer) {
 		sessionFactory.getCurrentSession().save(customer);
 		return customer ;
+	}
+
+
+	public Customer getValidateCustomer(int customerId, String userName, String password) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Customer.class);
+		criteria.add(Restrictions.eq("userName", userName));
+		criteria.add(Restrictions.eq("password", password));
+		Customer customer = (Customer)criteria.uniqueResult();
+		return customer;
+		
 	}
 }

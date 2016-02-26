@@ -45,6 +45,12 @@ public class ClientController {
 		return clientServiceImpl.registeredCustomer(clientId);
 	}
 	
+	@RequestMapping(value = "/registeredcustomer", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+	public WSCustomer getRegisteredCustomer(@RequestBody Customer customer) {
+		// DONE
+		return clientServiceImpl.getRegisteredCustomer(customer);
+	}
+	
 	@RequestMapping(value = "/registeredcustomer/account/{clientId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public WSAccount viewAccountBalance(@PathVariable(value = "clientId") int clientId) {
 		// DONE
