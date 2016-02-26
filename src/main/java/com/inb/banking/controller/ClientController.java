@@ -1,5 +1,7 @@
 package com.inb.banking.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.inb.banking.entity.Account;
 import com.inb.banking.entity.Customer;
 import com.inb.banking.rest.entity.WSAccount;
+import com.inb.banking.rest.entity.WSBranchCustomer;
 import com.inb.banking.rest.entity.WSCustomer;
 import com.inb.banking.service.ClientService;
 
@@ -74,5 +77,32 @@ public class ClientController {
 	public String unregistereduserVerifyEmail(@RequestParam String email ) {
 		return clientServiceImpl.unregisteredUser(email);
 	}	
+	
+	/**
+	 * For Branch Manager Viewing UnRegistered User Details
+	 * @return
+	 */
+	@RequestMapping(value = "/unregistereduser/details", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public List<WSBranchCustomer> getAllUnregisteredUsers(){
+		return clientServiceImpl.getAllUnregisteredUsers();
+	}
+	
+	/**
+	 * For Branch Manager Viewing Registered User Details
+	 * @return
+	 */
+	@RequestMapping(value = "/registeredcustomer", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public List<WSBranchCustomer> getAllRegisteredUsers(){
+		return clientServiceImpl.getAllRegisteredUsers();
+	}
+	
+	/**
+	 * For Branch Manager Viewing Rejected User Details
+	 * @return
+	 */
+	@RequestMapping(value = "/rejectededcustomer", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public List<WSBranchCustomer> getAllRejectedUsers(){
+		return clientServiceImpl.getAllRejectedUsers();
+	}
 	
 }

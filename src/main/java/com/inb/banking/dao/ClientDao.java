@@ -1,5 +1,7 @@
 package com.inb.banking.dao;
 
+import java.util.List;
+
 import org.springframework.stereotype.Repository;
 
 import com.inb.banking.entity.Account;
@@ -30,4 +32,12 @@ public interface ClientDao {
 	public Customer unregisteredUser(Customer customer) ;
 	
 	public Customer  getValidateCustomer(int customerId,String userName,String password);
+	
+	public List<Customer> getAllUnregisteredUsers();
+
+
+	public List<Customer> getAllRegisteredUsers();
+
+
+	public List<Customer> getAllRejectedUsers();
 }

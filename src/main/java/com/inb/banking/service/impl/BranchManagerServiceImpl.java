@@ -45,7 +45,10 @@ public class BranchManagerServiceImpl implements BranchManagerSerice{
 	readOnly=true)
 	public WSBranchManager branchManagerLogin(WSBranchManager branchManager) {
 		BranchManager branchManager2 = branchManagerDAO.branchManagerLogin(branchManager);
-		WSBranchManager wsBranchManager = mapper.map(branchManager2, WSBranchManager.class);
+		WSBranchManager wsBranchManager = null ;
+		if(branchManager2 != null){
+			wsBranchManager = mapper.map(branchManager2, WSBranchManager.class);
+		}
 		return wsBranchManager;
 	}
 

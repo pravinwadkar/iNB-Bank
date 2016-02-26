@@ -14,6 +14,7 @@ import com.inb.banking.dao.ClientDao;
 import com.inb.banking.entity.Account;
 import com.inb.banking.entity.Customer;
 import com.inb.banking.rest.entity.WSAccount;
+import com.inb.banking.rest.entity.WSBranchCustomer;
 import com.inb.banking.rest.entity.WSCustomer;
 import com.inb.banking.service.ClientService;
 import com.inbbank.util.GenerateUUID;
@@ -84,5 +85,51 @@ public class ClientServiceImpl implements ClientService {
 		wsCustomer = mapper.map(customerData, WSCustomer.class);
 		return wsCustomer;
 	}
-
+	
+	@Transactional(propagation = Propagation.NOT_SUPPORTED, readOnly = true)
+	public List<WSBranchCustomer> getAllUnregisteredUsers() {
+		List<Customer> customers = clientDao.getAllUnregisteredUsers();
+		List<WSBranchCustomer> wsBranchCustomers = new ArrayList<WSBranchCustomer>(customers.size());
+		if(customers.size()>0){
+			for(Customer customer : customers){
+				 WSBranchCustomer wsBranchCustomer = mapper.map(customer, WSBranchCustomer.class);
+				 for(WSAccount wsAccount : wsBranchCustomer.getAccounts())
+					 wsBranchCustomer.setAccount(wsAccount);
+				 wsBranchCustomers.add(wsBranchCustomer);
+			}
+			
+				
+		}
+		return wsBranchCustomers;
+	}
+	
+	@Transactional(propagation = Propagation.NOT_SUPPORTED, readOnly = true)
+	public List<WSBranchCustomer> getAllRegisteredUsers() {
+		List<Customer> customers = clientDao.getAllRegisteredUsers();
+		List<WSBranchCustomer> wsBranchCustomers = new ArrayList<WSBranchCustomer>(customers.size());
+		for(Customer customer : customers){
+			WSBranchCustomer wsBranchCustomer = mapper.map(customer, WSBranchCustomer.class);
+			wsBranchCustomer.setAccounthash(wsBranchCustomer.getAccounts());
+			wsBranchCustomers.add(wsBranchCustomer);
+		}
+			
+		return wsBranchCustomers;
+	}
+	
+	@Transactional(propagation = Propagation.NOT_SUPPORTED, readOnly = true)
+	public List<WSBranchCustomer> getAllRejectedUsers() {
+		List<Customer> customers = clientDao.getAllRejectedUsers();
+		List<WSBranchCustomer> wsBranchCustomers = new ArrayList<WSBranchCustomer>(customers.size());
+		if(customers.size()>0){
+			for(Customer customer : customers){
+				 WSBranchCustomer wsBranchCustomer = mapper.map(customer, WSBranchCustomer.class);
+				 for(WSAccount wsAccount : wsBranchCustomer.getAccounts())
+					 wsBranchCustomer.setAccount(wsAccount);
+				 wsBranchCustomers.add(wsBranchCustomer);
+			}
+			
+				
+		}
+		return wsBranchCustomers;
+	}
 }

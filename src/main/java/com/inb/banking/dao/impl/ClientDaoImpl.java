@@ -5,7 +5,9 @@ import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.sql.JoinType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -74,5 +76,35 @@ public class ClientDaoImpl implements ClientDao{
 		Customer customer = (Customer)criteria.uniqueResult();
 		return customer;
 		
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Customer> getAllUnregisteredUsers() {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Customer.class);
+		criteria.createAlias("branch", "branch",JoinType.LEFT_OUTER_JOIN);
+		criteria.createAlias("accounts", "accounts",JoinType.LEFT_OUTER_JOIN);
+		criteria.add(Restrictions.like("applicationStatus", "Pending",MatchMode.ANYWHERE));
+		return criteria.list();
+	}
+
+
+	@SuppressWarnings("unchecked")
+	public List<Customer> getAllRegisteredUsers() {
+		//String applicationStatus = null;
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Customer.class);
+		criteria.createAlias("branch", "branch",JoinType.LEFT_OUTER_JOIN);
+		criteria.createAlias("accounts", "accounts",JoinType.LEFT_OUTER_JOIN);
+		criteria.add(Restrictions.isNull("applicationStatus"));
+		return criteria.list();
+	}
+
+
+	@SuppressWarnings("unchecked")
+	public List<Customer> getAllRejectedUsers() {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Customer.class);
+		criteria.createAlias("branch", "branch",JoinType.LEFT_OUTER_JOIN);
+		criteria.createAlias("accounts", "accounts",JoinType.LEFT_OUTER_JOIN);
+		criteria.add(Restrictions.like("applicationStatus", "Rejected",MatchMode.ANYWHERE));
+		return criteria.list();
 	}
 }

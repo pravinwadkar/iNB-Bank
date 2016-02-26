@@ -1,8 +1,11 @@
 package com.inb.banking.service;
 
+import java.util.List;
+
 import com.inb.banking.entity.Account;
 import com.inb.banking.entity.Customer;
 import com.inb.banking.rest.entity.WSAccount;
+import com.inb.banking.rest.entity.WSBranchCustomer;
 import com.inb.banking.rest.entity.WSCustomer;
 
 
@@ -22,4 +25,10 @@ public interface ClientService {
 	public WSCustomer registeredCustomer(int clientId);
 	
 	public WSCustomer getRegisteredCustomer(Customer account);
+	
+	public List<WSBranchCustomer> getAllUnregisteredUsers();
+
+	public List<WSBranchCustomer> getAllRegisteredUsers();
+
+	public List<WSBranchCustomer> getAllRejectedUsers();
 }
