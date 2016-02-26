@@ -31,4 +31,7 @@ public interface ClientService {
 	public List<WSBranchCustomer> getAllRegisteredUsers();
 
 	public List<WSBranchCustomer> getAllRejectedUsers();
+	
+	public String unregisteredUserVerifyReject(String clientId,String email);
+
 }

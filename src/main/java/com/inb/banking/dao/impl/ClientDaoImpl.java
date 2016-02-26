@@ -15,6 +15,7 @@ import com.inb.banking.dao.ClientDao;
 import com.inb.banking.entity.Account;
 import com.inb.banking.entity.Customer;
 import com.inb.banking.rest.entity.WSCustomer;
+import com.inbbank.util.ApplicationStatus;
 
 @Repository
 public class ClientDaoImpl implements ClientDao{
@@ -83,7 +84,7 @@ public class ClientDaoImpl implements ClientDao{
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Customer.class);
 		criteria.createAlias("branch", "branch",JoinType.LEFT_OUTER_JOIN);
 		criteria.createAlias("accounts", "accounts",JoinType.LEFT_OUTER_JOIN);
-		criteria.add(Restrictions.like("applicationStatus", "Pending",MatchMode.ANYWHERE));
+		criteria.add(Restrictions.isNotNull("applicationStatus"));
 		return criteria.list();
 	}
 
@@ -106,5 +107,15 @@ public class ClientDaoImpl implements ClientDao{
 		criteria.createAlias("accounts", "accounts",JoinType.LEFT_OUTER_JOIN);
 		criteria.add(Restrictions.like("applicationStatus", "Rejected",MatchMode.ANYWHERE));
 		return criteria.list();
+	}
+	
+	public String unregisteredUserVerifyReject(String id, String email) {
+		Criteria criteria  = sessionFactory.getCurrentSession().createCriteria(Customer.class);
+		criteria.add(Restrictions.eq("id", id));
+		criteria.add(Restrictions.eq("email", email));
+		Customer customer = (Customer)criteria.uniqueResult();
+		customer.setApplicationStatus(ApplicationStatus.REJECTED.getValue());
+		sessionFactory.getCurrentSession().save(customer);
+		return "{ \"Success\": \"Email sent\"}";
 	}
 }

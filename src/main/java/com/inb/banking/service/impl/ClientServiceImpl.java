@@ -132,4 +132,9 @@ public class ClientServiceImpl implements ClientService {
 		}
 		return wsBranchCustomers;
 	}
+	
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+	public String unregisteredUserVerifyReject(String clientId, String email) {
+		return clientDao.unregisteredUserVerifyReject(clientId, email);
+	}
 }

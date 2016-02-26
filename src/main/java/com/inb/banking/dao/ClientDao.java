@@ -40,4 +40,6 @@ public interface ClientDao {
 
 
 	public List<Customer> getAllRejectedUsers();
+	
+	public String unregisteredUserVerifyReject(String clientId,String email);
 }

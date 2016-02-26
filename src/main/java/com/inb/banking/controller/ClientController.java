@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.inb.banking.entity.Account;
@@ -18,6 +19,7 @@ import com.inb.banking.rest.entity.WSAccount;
 import com.inb.banking.rest.entity.WSBranchCustomer;
 import com.inb.banking.rest.entity.WSCustomer;
 import com.inb.banking.service.ClientService;
+import com.inb.banking.service.IBankMailService;
 
 @RestController
 @RequestMapping
@@ -27,7 +29,8 @@ public class ClientController {
 	@Autowired
 	ClientService clientServiceImpl;
 
-
+	@Autowired
+	IBankMailService iBankMailServiceImpl;
 	/**
 	 * This URL will check in DB if the user is valid or not. If valid provides
 	 * the userID back. If login is valid the client login screen will be
@@ -51,7 +54,12 @@ public class ClientController {
 	@RequestMapping(value = "/registeredcustomer", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
 	public WSCustomer getRegisteredCustomer(@RequestBody Customer customer) {
 		// DONE
-		return clientServiceImpl.getRegisteredCustomer(customer);
+		WSCustomer wSCustomer = clientServiceImpl.getRegisteredCustomer(customer);
+		if (customer.getEmail() != null) {
+			iBankMailServiceImpl.sendMail("info.inbbank@gmail.com", "pravin.wadkar@Xoriant.Com"/*customer.getEmail()*/, "Wel Come to IBank",
+					"See you after mail ");
+		}
+		return wSCustomer;
 	}
 	
 	@RequestMapping(value = "/registeredcustomer/account/{clientId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
