@@ -1,7 +1,9 @@
 package com.inbbank.util;
 
 public enum ApplicationStatus {
-	REJECTED("Rejected"), APPROVED("approved");
+	REJECTED("Rejected"),
+	PENDING("Pending"),
+	APPROVED("approved");
 
 	private final String value;
 
