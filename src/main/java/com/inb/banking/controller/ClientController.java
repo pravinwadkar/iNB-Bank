@@ -150,7 +150,7 @@ public class ClientController {
 	 * @return
 	 */
 	@RequestMapping(value = "/unregistereduser/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public WSBranchCustomer getCustomerDetailsById(@PathVariable(value="id") String id){
+	public List<WSBranchCustomer> getCustomerDetailsById(@PathVariable(value="id") String id){
 		
 		return clientServiceImpl.getCustomerDetailsById(id);
 	}

@@ -90,6 +90,7 @@ public class ClientServiceImpl implements ClientService {
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public Customer unregisteredUser(Customer account) {
 		account.setId(GenerateUUID.getRendomString());
+		account.setApplicationStatus("Pending");
 		return clientDao.unregisteredUser(account);
 	}
 
@@ -165,15 +166,17 @@ public class ClientServiceImpl implements ClientService {
 	}
 
 	@Transactional(propagation = Propagation.NOT_SUPPORTED, readOnly = true)
-	public WSBranchCustomer getCustomerDetailsById(String id) {
+	public List<WSBranchCustomer> getCustomerDetailsById(String id) {
 		Customer customer = clientDao.getCustomerDetailsById(id);
+		List<WSBranchCustomer> wscustomerList = new ArrayList<WSBranchCustomer>();
 		WSBranchCustomer wsBranchCustomer = new WSBranchCustomer();
 		if (customer != null) {
 			wsBranchCustomer = mapper.map(customer, WSBranchCustomer.class);
 			Set<WSAccount> wsAccounts = wsBranchCustomer.getAccounts();
 			for (WSAccount wsAccount : wsAccounts)
 				wsBranchCustomer.setAccount(wsAccount);
-			return wsBranchCustomer;
+			wscustomerList.add(wsBranchCustomer);
+			return wscustomerList;
 		} else
 			return null;
 

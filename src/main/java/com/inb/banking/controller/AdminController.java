@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.inb.banking.dao.AdminDao;
 import com.inb.banking.entity.Admin;
 import com.inb.banking.rest.entity.WSAdminLogout;
+import com.inb.banking.service.AdminService;
 
 /**
  * This url mapping can be used to provide different types of information. one
@@ -25,24 +25,15 @@ import com.inb.banking.rest.entity.WSAdminLogout;
 public class AdminController {
 
 	@Autowired
-	private AdminDao admindao;
+	private AdminService adminservice;
 
 	private String logoutMsg = "{\"logoutMsg\" : \"Successfully Loged Out\"}";
-	/*
-	 * @RequestMapping(value = "/login", method =
-	 * RequestMethod.PUT,consumes=MediaType.APPLICATION_JSON_VALUE, produces =
-	 * MediaType.APPLICATION_JSON_VALUE) public Information
-	 * getAboutData(@RequestBody Information information) { // Information
-	 * information = new Information(); information.setName("about the bank");
-	 * information.setContents("This is the contents about the bank");
-	 * System.out.println("Working admin ***********************************" +
-	 * information.getName()); return information; }
-	 */
-
+	
+	
 	@RequestMapping(value = "/login", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public Admin adminlogin(@RequestBody Admin admin) {
+	public Admin adminlogin(@RequestBody Admin admin) throws Exception{
 		Admin adminData = null;
-		adminData = admindao.findAdminByUsernameAndPassword(admin.getUserName(), admin.getPassword());
+		adminData = adminservice.autheticateAdmin(admin);
 		return adminData;
 	}
 

@@ -39,7 +39,7 @@ public interface ClientService {
 	public boolean uploadDocument(CustDocument custDocument) throws Exception ;
 	
 	
-	public WSBranchCustomer getCustomerDetailsById(String id);
+	public List<WSBranchCustomer> getCustomerDetailsById(String id);
 	
 	
 
