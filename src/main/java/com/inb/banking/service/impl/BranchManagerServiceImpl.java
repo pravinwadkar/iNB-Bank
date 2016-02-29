@@ -6,6 +6,7 @@ import java.util.List;
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 
 import com.inb.banking.dao.BranchDAO;
@@ -30,7 +31,7 @@ public class BranchManagerServiceImpl implements BranchManagerSerice{
 	private DozerBeanMapper mapper;
 	
 	
-	@org.springframework.transaction.annotation.Transactional(propagation=Propagation.REQUIRED,readOnly=false)
+	@org.springframework.transaction.annotation.Transactional(propagation=Propagation.REQUIRED,readOnly=false,isolation=Isolation.READ_COMMITTED)
 	public WSBranchManager createBranchManager(WSBranchManager wsbranchmanager) {
 		wsbranchmanager.setBranch(wsbranchmanager.getBranchPOJO());
 		wsbranchmanager.setId(GenerateUUID.getRendomString());
@@ -42,7 +43,7 @@ public class BranchManagerServiceImpl implements BranchManagerSerice{
 	}
 
 	@org.springframework.transaction.annotation.Transactional(propagation=Propagation.NOT_SUPPORTED,
-	readOnly=true)
+	readOnly=true,isolation=Isolation.READ_COMMITTED)
 	public WSBranchManager branchManagerLogin(WSBranchManager branchManager) {
 		BranchManager branchManager2 = branchManagerDAO.branchManagerLogin(branchManager);
 		WSBranchManager wsBranchManager = null ;
@@ -55,7 +56,7 @@ public class BranchManagerServiceImpl implements BranchManagerSerice{
 
 	
 	@org.springframework.transaction.annotation.Transactional(propagation=Propagation.NOT_SUPPORTED,
-	readOnly=true)
+	readOnly=true,isolation=Isolation.READ_COMMITTED)
 	public List<WSBranchManager> getAllBranchManagerDeatils() {
 		List<BranchManager> branchManagers = branchManagerDAO.getAllBranchManagerDeatils();
 		List<WSBranchManager> wsBranchManagers = new ArrayList<WSBranchManager>(branchManagers.size());

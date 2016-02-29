@@ -16,7 +16,6 @@ import com.inb.banking.dao.ClientDao;
 import com.inb.banking.entity.Account;
 import com.inb.banking.entity.CustDocument;
 import com.inb.banking.entity.Customer;
-import com.inb.banking.rest.entity.WSCustomer;
 import com.inb.banking.rest.entity.WSTransfer;
 import com.inbbank.util.ApplicationStatus;
 import com.inbbank.util.GenerateUUID;
@@ -61,14 +60,11 @@ public class ClientDaoImpl implements ClientDao {
 
 	public List<Account> viewAccountBalance(int id) {
 
-		Account cust = null;
 		List<Account> accList = new ArrayList<Account>();
 		Criteria cr = sessionFactory.getCurrentSession().createCriteria(Account.class);
 		cr.createAlias("customer", "customer");
 		cr.add(Restrictions.eq("customer.customerId", BigDecimal.valueOf(id)));
 		accList = cr.list();
-
-		
 		return accList;
 	}
 	
@@ -162,9 +158,9 @@ public class ClientDaoImpl implements ClientDao {
 		return "{ \"Success\": \"Email sent\"}";
 	}
 
-	public boolean uploadDocument(CustDocument custDocument) throws Exception {
+	public boolean uploadDocument(CustDocument custDocument,String email) throws Exception {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Customer.class);
-		criteria.add(Restrictions.eq("email", custDocument.getEmail()));
+		criteria.add(Restrictions.eq("email", email));
 		Customer customer = (Customer) criteria.uniqueResult();
 		custDocument.setCustomer(customer);
 		custDocument.setId(GenerateUUID.getRendomString());
@@ -192,4 +188,17 @@ public class ClientDaoImpl implements ClientDao {
 		sessionFactory.getCurrentSession().save(accountR);
 		sessionFactory.getCurrentSession().save(accountC);
 	}
+	
+	public Customer unregisteredUserVerification(String id) {
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Customer.class);
+        criteria.createAlias("branch", "branch",JoinType.LEFT_OUTER_JOIN);
+        criteria.createAlias("accounts", "accounts",JoinType.LEFT_OUTER_JOIN);
+        criteria.add(Restrictions.eq("id", id));
+        return (Customer)criteria.uniqueResult();
+ }
+
+	public void updateCustomerInformation(Customer customer) {
+        sessionFactory.getCurrentSession().update(customer);
+ }
+
 }

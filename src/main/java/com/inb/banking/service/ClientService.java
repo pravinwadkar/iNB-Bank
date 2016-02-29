@@ -20,7 +20,7 @@ public interface ClientService {
 	// new account opening request
 	public String unregisteredUser(String account);
 	
-	public Customer unregisteredUser(Customer account);
+	public WSBranchCustomer unregisteredUser(WSBranchCustomer account);
 
 	public Customer registeredCustomerAccount(int clientId);
 	
@@ -36,11 +36,14 @@ public interface ClientService {
 	
 	public String unregisteredUserVerifyReject(String clientId,String email);
 	
-	public boolean uploadDocument(CustDocument custDocument) throws Exception ;
+	public boolean uploadDocument(CustDocument custDocument,String email) throws Exception ;
 	
 	
 	public List<WSBranchCustomer> getCustomerDetailsById(String id);
 	
+	public void unregisteredUserVerification(String id);
+
+	public void unregisteredUserRejection(String id);
 	
 
 }

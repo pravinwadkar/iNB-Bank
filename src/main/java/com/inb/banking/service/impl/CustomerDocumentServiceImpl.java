@@ -3,6 +3,7 @@ package com.inb.banking.service.impl;
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,7 +21,7 @@ public class CustomerDocumentServiceImpl implements CustomerDocumentService{
 	@Autowired
 	private DozerBeanMapper mapper;
 	
-	@Transactional(propagation=Propagation.REQUIRED,readOnly=true)
+	@Transactional(propagation=Propagation.REQUIRED,readOnly=true,isolation=Isolation.READ_COMMITTED)
 	public byte[] getAddressProofDocumentById(String customerid) {
 		CustDocument custDocument = customerDocumentDAO.getAddressProofDocumentById(customerid);
 		WSCustomerDocument wsCustomerDocument = null;
@@ -32,7 +33,7 @@ public class CustomerDocumentServiceImpl implements CustomerDocumentService{
 			return null;
 	}
 	
-	@Transactional(propagation=Propagation.REQUIRED,readOnly=true)
+	@Transactional(propagation=Propagation.REQUIRED,readOnly=true,isolation=Isolation.READ_COMMITTED)
 	public byte[] getAgeProofDocumentById(String customerid) {
 		CustDocument custDocument = customerDocumentDAO.getAgeProofDocumentById(customerid);
 		WSCustomerDocument wsCustomerDocument = null;

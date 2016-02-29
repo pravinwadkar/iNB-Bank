@@ -9,6 +9,7 @@ import java.util.List;
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,7 +33,7 @@ public class BranchServiceImpl implements BranchService{
 	@Autowired
 	private DozerBeanMapper mapper;
 	
-	@Transactional(propagation=Propagation.NOT_SUPPORTED,readOnly=true)
+	@Transactional(propagation=Propagation.NOT_SUPPORTED,readOnly=true,isolation=Isolation.READ_COMMITTED)
 	public List<WSBranch> getAllBranchDetails() {
 		List<Branch> branchs = branchDAO.getAllBranchDetails();
 		List<WSBranch> wsBranchs = new ArrayList<WSBranch>(branchs.size());
@@ -41,7 +42,7 @@ public class BranchServiceImpl implements BranchService{
 		return wsBranchs;
 	}
 
-	@Transactional(propagation=Propagation.REQUIRED,readOnly=false)
+	@Transactional(propagation=Propagation.REQUIRED,readOnly=false,isolation=Isolation.READ_COMMITTED)
 	public WSBranch createBranch(Branch branch) {
 		branch.setId(GenerateUUID.getRendomString());
 		branchDAO.createBranch(branch);

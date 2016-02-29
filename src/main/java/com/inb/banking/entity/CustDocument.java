@@ -22,9 +22,6 @@ public class CustDocument implements Serializable {
 	@Column(unique=true, nullable=false, length=50)
 	private String id;
 	
-	@Column(length=50)
-	private String email;
-
 	@Lob
 	private byte[] imageaddress;
 
@@ -70,12 +67,6 @@ public class CustDocument implements Serializable {
 	public void setCustomer(Customer customer) {
 		this.customer = customer;
 	}
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
+	
 
 }

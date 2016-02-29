@@ -34,19 +34,22 @@ public class WSCustomer {
 	private String password;
 
 	private BigDecimal phone;
+	
+	private String branch;
 
 	private String userName;
-	private WSBranch branch;
+	
+	private WSBranch branchData;
 	
 	private String exception;
 	
 
 	public WSBranch getBranch() {
-		return branch;
+		return branchData;
 	}
 
-	public void setBranch(WSBranch branch) {
-		this.branch = branch;
+	public void setBranch(WSBranch branchData) {
+		this.branchData = branchData;
 	}
 
 	public String getId() {

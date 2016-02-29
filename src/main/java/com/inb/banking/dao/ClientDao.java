@@ -46,7 +46,7 @@ public interface ClientDao {
 	
 	public String unregisteredUserVerifyReject(String clientId,String email);
 	
-	public boolean uploadDocument(CustDocument custDocument) throws Exception;
+	public boolean uploadDocument(CustDocument custDocument,String email) throws Exception;
 
 
 	public Customer getCustomerDetailsById(String id);
@@ -55,6 +55,11 @@ public interface ClientDao {
 
 
 	public void transfer(WSTransfer wsTransfer);
+	
+	public Customer unregisteredUserVerification(String id);
+
+	public void updateCustomerInformation(Customer customer);
+
 
 
 }
